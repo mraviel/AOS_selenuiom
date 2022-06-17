@@ -51,7 +51,8 @@ class TestAOS(TestCase):
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
 
-
+        print(self.navigation_line.color_and_quantity(0))
+        print(self.navigation_line.color_and_quantity(1))
 
     def tearDown(self):
         # Close the test

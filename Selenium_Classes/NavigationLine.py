@@ -22,7 +22,7 @@ class Navigation_line :
         self.wait.until(EC.presence_of_element_located((By.ID,"menuUser")))
         self.driver.find_element(By.ID, "menuUser").click()
 
-    def moucse_hover_cart_icon (self):
+    def mouse_hover_cart_icon (self):
         self.wait.until(EC.presence_of_element_located((By.ID, "menuCart")))
         self.action.move_to_element(self.driver.find_element(By.ID, "menuCart"))
         self.action.perform()
@@ -31,11 +31,11 @@ class Navigation_line :
         self.driver.find_element(By.ID, "menuCart").click()
 
     def cart_icon_product (self):
-        self.moucse_hover_cart_icon()
+        self.mouse_hover_cart_icon()
         return self.driver.find_elements(By.TAG_NAME, "tbody")
 
-    def colorandquantity (self, num:int):
-        self.moucse_hover_cart_icon()
+    def color_and_quantity (self, num:int):
+        self.mouse_hover_cart_icon()
         self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "td>a>label")))
         return self.driver.find_elements(By.CSS_SELECTOR, "td>a>label")[num].text
 
