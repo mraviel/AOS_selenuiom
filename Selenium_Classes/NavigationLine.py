@@ -19,7 +19,8 @@ class Navigation_line :
         self.driver.find_element(By.CSS_SELECTOR, "a[ng-click='go_up()']").click()
 
     def click_account_icon (self):
-        self.wait.until(EC.presence_of_element_located((By.ID,"menuUser")))
+        # self.wait.until(EC.presence_of_element_located((By.ID,"menuUser")))
+        self.wait.until(EC.element_to_be_clickable((By.ID,"menuUser")))
         self.driver.find_element(By.ID, "menuUser").click()
 
     def mouse_hover_cart_icon (self):
@@ -52,6 +53,25 @@ class Navigation_line :
         self.click_account_icon()
         self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div>label[class='option roboto-medium ng-scope'][translate='Sign_out']")))
         self.driver.find_element(By.CSS_SELECTOR,"div>label[class='option roboto-medium ng-scope'][translate='Sign_out']").click()
+
+    def username_appearance(self):
+        """ Return username: str,
+            From Navigation Line """
+        # self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a[id='menuUserLink'] > span")))
+        self.wait_for_visibility_of_username()
+        return self.driver.find_element(By.CSS_SELECTOR, "a[id='menuUserLink'] > span").text
+
+    def account_options_small_window_style(self):
+        """ Return the style of account options:
+            None=close, block=open"""
+        return self.driver.find_element(By.CSS_SELECTOR, "#loginMiniTitle").get_attribute("style")
+
+    def wait_for_invisibility_of_username(self):
+        self.wait.until(EC.invisibility_of_element((By.CSS_SELECTOR, "a[id='menuUserLink'] > span")))
+
+    def wait_for_visibility_of_username(self):
+        self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a[id='menuUserLink'] > span")))
+
 
 
 

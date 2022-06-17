@@ -35,7 +35,12 @@ class LoginPage:
     def click_new_account(self):
         # Wait until element located
         self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "a[translate='CREATE_NEW_ACCOUNT']")))
-        self.driver.find_element(By.CSS_SELECTOR, "a[translate='CREATE_NEW_ACCOUNT']").click()
+        while True:
+            try:
+                self.driver.find_element(By.CSS_SELECTOR, "a[translate='CREATE_NEW_ACCOUNT']").click()
+                break
+            except:
+                pass
 
     def type_username(self, username: str):
         # Wait until element located
