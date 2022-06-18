@@ -46,26 +46,51 @@ class TestAOS(TestCase):
 
     def test_num2(self):
 
+        products_info = []  # Gather products info form product page
+
+        # Add first product to cart
         self.home_page.open_speakers_category()
         self.category_page.choose_product_by_index(1)
         self.product_page.choose_Quantity(2)
+        products_info.append(self.product_page.get_product_info())  # All info about product
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
 
+        # Add second product to cart
         self.home_page.open_mice_category()
         self.category_page.choose_product_by_index(3)
         self.product_page.choose_Quantity(1)
+        products_info.append(self.product_page.get_product_info())  # All info about product
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
 
+        # Add third product to cart
         self.home_page.open_laptops_category()
         self.category_page.choose_product_by_index(0)
         self.product_page.choose_Quantity(3)
+        products_info.append(self.product_page.get_product_info())  # All info about product
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
 
-        print(self.navigation_line.color_and_quantity(0))
-        print(self.navigation_line.color_and_quantity(1))
+        products_in_cart_window = self.navigation_line.cart_small_window_products()
+        products_in_cart_window.reverse()
+
+        # Is product name (part name) in full name
+        index = 0
+        for product in products_in_cart_window:
+            self.assertIn(product[0], products_info[index][0])
+            print(f"{product[0]} in '{products_info[index][0]}'")
+            index += 1
+
+        # Is quantity, color and price expectation equal to products_in_cart_window?
+        info = 1
+        while info < 4:
+            index = 0
+            for product in products_in_cart_window:
+                self.assertIn(products_info[index][info], product[info])
+                print(f"{products_info[index][info]} in '{product[info]}'")
+                index += 1
+            info += 1  # what part of the data to test (color, price ...)
 
     def test4(self):
 
@@ -143,7 +168,7 @@ class TestAOS(TestCase):
         self.order_payment_details_page.click_registration()
 
         # Fill info
-        self.signup_page.type_username("aviel12")
+        self.signup_page.type_username("aviel124")
         self.signup_page.type_email("aviel@gmail.com")
         self.signup_page.type_password("Aviel123")
         self.signup_page.type_confirm_password("Aviel123")
@@ -182,7 +207,8 @@ class TestAOS(TestCase):
 
         # Delete the account
         self.navigation_line.my_account_option()
-        self.account_page.click_delete_account()
+        # self.account_page.click_delete_account()
+        self.account_page.force_delete_account()
         print("Account Deleted")
 
     def test_num10(self):
@@ -241,7 +267,8 @@ class TestAOS(TestCase):
         # Delete the account
         self.navigation_line.wait_for_visibility_of_username()
         self.navigation_line.my_account_option()
-        self.account_page.click_delete_account()
+        # self.account_page.click_delete_account()
+        self.account_page.force_delete_account()
         print("Account Deleted")
 
     def tearDown(self):

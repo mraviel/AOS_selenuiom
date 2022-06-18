@@ -86,6 +86,35 @@ class Navigation_line :
         self.wait_for_invisibility_of_cart_small_windows()
         self.driver.find_elements(By.CSS_SELECTOR, "#loginMiniTitle > label")[1].click()
 
+    def cart_small_window_products(self):
+        """ Return all products from cart small window
+            [[name, quantity, color, price], [...] ...] """
+
+        self.mouse_hover_cart_icon()
+        table = self.driver.find_element(By.CSS_SELECTOR, "div > table")
+        rows = table.find_elements(By.CSS_SELECTOR, "tbody > tr")
+
+        products = []
+        for row in rows:
+            cells = row.find_elements(By.TAG_NAME, "td")
+
+            name_color_quantity = cells[1].text
+            price = cells[2].text
+
+            t = name_color_quantity.split("\n")
+            t.append(price)
+
+            # remove dots
+            if " ..." in t[0] and len(t[0]) >= 30:
+                t[0] = t[0].replace(" ...", "")
+            elif "..." in t[0] and len(t[0]) >= 30:
+                t[0] = t[0].replace("...", "")
+
+            products.append(t)  # [name, quantity, color, price]
+
+        return products
+
+
 
 
 

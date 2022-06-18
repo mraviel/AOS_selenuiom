@@ -24,4 +24,14 @@ class AccountPage:
         self.delete_account_located().click()
         self.click_yes()
 
+    def force_delete_account(self):
+        """ Force delete account """
+
+        while True:
+            try:
+                self.click_delete_account()
+                break
+            except:
+                pass
+
 
