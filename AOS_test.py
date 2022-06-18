@@ -67,6 +67,48 @@ class TestAOS(TestCase):
         print(self.navigation_line.color_and_quantity(0))
         print(self.navigation_line.color_and_quantity(1))
 
+    def test6(self):
+
+        # Add first product to shopping cart
+        self.home_page.open_speakers_category()
+        self.category_page.choose_product_by_index(1)
+        self.product_page.choose_Quantity(2)
+        self.product_page.click_on_att_to_cart()
+        self.navigation_line.click_logo_icon()
+
+        # Add second product to shopping cart
+        self.home_page.open_mice_category()
+        self.category_page.choose_product_by_index(3)
+        self.product_page.choose_Quantity(1)
+        self.product_page.click_on_att_to_cart()
+        self.navigation_line.click_logo_icon()
+
+        # change first product quantity
+        self.navigation_line.click_cart_icon()
+        cart_before_change = self.shopping_cart_page.all_shopping_cart_items()
+
+        self.navigation_line.click_cart_icon()
+        self.shopping_cart_page.edit_product_by_index(0)
+        self.product_page.choose_Quantity(4)
+        self.product_page.click_on_att_to_cart()
+        self.navigation_line.click_logo_icon()
+
+        # change second product quantity
+        self.navigation_line.click_cart_icon()
+        self.shopping_cart_page.edit_product_by_index(1)
+        self.product_page.choose_Quantity(3)
+        self.product_page.click_on_att_to_cart()
+
+        self.navigation_line.click_cart_icon()
+        cart_after_change = self.shopping_cart_page.all_shopping_cart_items()
+        print(cart_after_change)
+
+        # Check if quantity of first product change to 3
+        self.assertEqual(cart_after_change[0][1], '3')
+
+        # Check if quantity of second product change to 4
+        self.assertEqual(cart_after_change[1][1], '4')
+
     def test_num8(self):
 
         # Add to cart few products

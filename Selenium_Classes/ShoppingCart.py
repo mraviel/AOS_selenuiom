@@ -43,7 +43,7 @@ class ShoppingCart:
 
     def all_shopping_cart_items(self):
         """ Return all shopping cart items
-            [[image, name, ...], [img, name, ...] ...] """
+            [[name, quantity, price], [name, quantity, price] ...] """
 
         table = self.driver.find_element(By.CSS_SELECTOR, "table.fixedTableEdgeCompatibility")
         rows = table.find_elements(By.CSS_SELECTOR, "tbody > tr")  # Only the items in the body section
@@ -52,8 +52,11 @@ class ShoppingCart:
             item = []
             cells = row.find_elements(By.TAG_NAME, "td")
             for cell in cells:
-                item.append(cell)
+                item.append(cell.text)
+            item = [x for x in item if x]  # Remove all empty item values ('')
+            item[2] = item[2][0:-14]  # Remove additional words from price
             all_items.append(item)
+
         return all_items
 
     def continue_shopping(self):
