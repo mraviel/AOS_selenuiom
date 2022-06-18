@@ -11,7 +11,7 @@ from selenium.webdriver.common.action_chains import *
 
 class ShoppingCart:
 
-    def _init_(self, driver: webdriver.Chrome):
+    def __init__(self, driver: webdriver.Chrome):
         self.driver=driver
         self.wait = WebDriverWait(self.driver, 20)
         self.action = ActionChains(self.driver)
@@ -37,3 +37,26 @@ class ShoppingCart:
                 break
             except:
                 pass
+
+    def click_checkout(self):
+        self.driver.find_element(By.ID, "checkOutButton").click()
+
+    def all_shopping_cart_items(self):
+        """ Return all shopping cart items
+            [[image, name, ...], [img, name, ...] ...] """
+
+        table = self.driver.find_element(By.CSS_SELECTOR, "table.fixedTableEdgeCompatibility")
+        rows = table.find_elements(By.CSS_SELECTOR, "tbody > tr")  # Only the items in the body section
+        all_items = []
+        for row in rows:
+            item = []
+            cells = row.find_elements(By.TAG_NAME, "td")
+            for cell in cells:
+                item.append(cell)
+            all_items.append(item)
+        return all_items
+
+    def continue_shopping(self):
+        """ Return  """
+        # EDIT ME
+        return self.driver.find_element(By.LINK_TEXT, "CONTINUE SHOPPING").text

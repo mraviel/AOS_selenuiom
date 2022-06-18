@@ -28,7 +28,7 @@ class Navigation_line :
         self.action.move_to_element(self.driver.find_element(By.ID, "menuCart"))
         self.action.perform()
 
-    def click_cart_icon (self):
+    def click_cart_icon(self):
         self.driver.find_element(By.ID, "menuCart").click()
 
     def cart_icon_product (self):
@@ -71,6 +71,21 @@ class Navigation_line :
 
     def wait_for_visibility_of_username(self):
         self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a[id='menuUserLink'] > span")))
+
+    def wait_for_invisibility_of_cart_small_windows(self):
+        """ Wait for cart small window to disappear """
+        self.wait.until(EC.invisibility_of_element((By.ID, "toolTipCart")))
+
+    # def wait_for_visibility_of_account_options(self):
+    #     self.wait.until(EC.visibility_of_all_elements_located((By.ID, "menuUser")))
+
+    def click_on_my_orders(self):
+        self.click_account_icon()
+        # self.wait.until(EC.visibility_of((self.driver.find_elements(By.CSS_SELECTOR, "#loginMiniTitle > label")[1])))
+        # self.wait.until(EC.visibility_of_all_elements_located((By.CSS_SELECTOR, "#loginMiniTitle > label")))
+        self.wait_for_invisibility_of_cart_small_windows()
+        self.driver.find_elements(By.CSS_SELECTOR, "#loginMiniTitle > label")[1].click()
+
 
 
 

@@ -16,7 +16,8 @@ class OrderPaymentDetails:
 
     def choose_payment_method(self, payment_type: str):
         # Wait until element located
-        self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "[ng-init='checkedRadio = 1'] > div")))
+        self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[ng-init='checkedRadio = 1'] > div")))
+        # self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "[ng-init='checkedRadio = 1'] > div")))
 
         d = {"SafePay": 0, "MasterCredit": 1}
         if payment_type not in d.keys():
@@ -69,6 +70,9 @@ class OrderPaymentDetails:
 
     def credit_pay_now_click(self):
         self.driver.find_element(By.ID, "pay_now_btn_ManualPayment").click()
+
+    def click_registration(self):
+        self.driver.find_element(By.ID, "registration_btnundefined").click()
 
 
 
