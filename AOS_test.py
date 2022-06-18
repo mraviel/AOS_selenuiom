@@ -67,6 +67,19 @@ class TestAOS(TestCase):
         print(self.navigation_line.color_and_quantity(0))
         print(self.navigation_line.color_and_quantity(1))
 
+    def test4(self):
+
+        # Add one product to shopping cart
+        self.home_page.open_speakers_category()
+        self.category_page.choose_product_by_index(1)
+        self.product_page.choose_Quantity(2)
+        self.product_page.click_on_att_to_cart()
+
+        # Check current location, shopping cart
+        self.navigation_line.click_cart_icon()
+        current_page_text = self.shopping_cart_page.logo_shopping_cart()
+        self.assertEqual("SHOPPING CART", current_page_text)
+
     def test6(self):
 
         # Add first product to shopping cart
