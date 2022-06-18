@@ -48,8 +48,8 @@ class ExcelData:
         return return_info(title_column, info_column)
 
     def new_account(self, test_num):
-        title_column = sheet["B"][15:17]
-        info_column = sheet[self.test_column[test_num]][15:17]
+        title_column = sheet["B"][15:27]
+        info_column = sheet[self.test_column[test_num]][15:27]
         return return_info(title_column, info_column)
 
     def safe_pay(self, test_num):
@@ -70,10 +70,14 @@ class ExcelData:
         return return_info(title_column, info_column)
 
 
-data = ExcelData()
+if __name__ == '__main__':
 
-print(data.product1(1))
-print(data.product2(2))
-print(data.product3(3))
-print(data.safe_pay(4))
-print(data.master_card(5))
+    data = ExcelData()
+
+    print(data.product1(1))
+    print(data.product2(2))
+    print(data.product3(3))
+    print(data.safe_pay(4))
+    print(data.master_card(5))
+
+    print(data.new_account(10))

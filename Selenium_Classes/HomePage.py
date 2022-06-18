@@ -12,7 +12,7 @@ from selenium.webdriver.common.action_chains import *
 class HomePage:
 
     def __init__(self, driver: webdriver.Chrome):
-        self.driver=driver
+        self.driver = driver
         self.wait = WebDriverWait(self.driver, 10)
         self.action = ActionChains(self.driver)
 
@@ -35,3 +35,11 @@ class HomePage:
     def open_headphones_category(self):
         self.wait.until(EC.presence_of_element_located((By.ID, "headphonesTxt")))
         self.driver.find_element(By.ID, "headphonesTxt").click()
+
+    def open_category(self, category: str):
+        if category != str:
+            raise TypeError("category must be str")
+
+        category = category.lower()
+        self.wait.until(EC.presence_of_element_located((By.ID, f"{category}Txt")))
+        self.driver.find_element(By.ID, f"{category}Txt").click()
