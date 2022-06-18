@@ -45,12 +45,14 @@ class TestAOS(TestCase):
         self.order_page = OrdersPage(self.driver)
 
     def test_num2(self):
+        """ Test that shopping cart small window to have all correct products that the user added
+            matching: product name, color, quantity and price """
 
         products_info = []  # Gather products info form product page
 
         # Add first product to cart
         self.home_page.open_speakers_category()
-        self.category_page.choose_product_by_index(1)
+        self.category_page.choose_product_by_id(25)
         self.product_page.choose_Quantity(2)
         products_info.append(self.product_page.get_product_info())  # All info about product
         self.product_page.click_on_att_to_cart()
@@ -58,7 +60,7 @@ class TestAOS(TestCase):
 
         # Add second product to cart
         self.home_page.open_mice_category()
-        self.category_page.choose_product_by_index(3)
+        self.category_page.choose_product_by_id(30)
         self.product_page.choose_Quantity(1)
         products_info.append(self.product_page.get_product_info())  # All info about product
         self.product_page.click_on_att_to_cart()
@@ -66,7 +68,7 @@ class TestAOS(TestCase):
 
         # Add third product to cart
         self.home_page.open_laptops_category()
-        self.category_page.choose_product_by_index(0)
+        self.category_page.choose_product_by_id(9)
         self.product_page.choose_Quantity(3)
         products_info.append(self.product_page.get_product_info())  # All info about product
         self.product_page.click_on_att_to_cart()
@@ -93,10 +95,11 @@ class TestAOS(TestCase):
             info += 1  # what part of the data to test (color, price ...)
 
     def test4(self):
+        """ Test after adding to cart one product navigate to cart page """
 
         # Add one product to shopping cart
         self.home_page.open_speakers_category()
-        self.category_page.choose_product_by_index(1)
+        self.category_page.choose_product_by_id(25)
         self.product_page.choose_Quantity(2)
         self.product_page.click_on_att_to_cart()
 
@@ -106,17 +109,18 @@ class TestAOS(TestCase):
         self.assertEqual("SHOPPING CART", current_page_text)
 
     def test6(self):
+        """ Test that cart page update after editing two products from cart page """
 
         # Add first product to shopping cart
         self.home_page.open_speakers_category()
-        self.category_page.choose_product_by_index(1)
+        self.category_page.choose_product_by_id(25)
         self.product_page.choose_Quantity(2)
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
 
         # Add second product to shopping cart
         self.home_page.open_mice_category()
-        self.category_page.choose_product_by_index(3)
+        self.category_page.choose_product_by_id(30)
         self.product_page.choose_Quantity(1)
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
@@ -148,16 +152,18 @@ class TestAOS(TestCase):
         self.assertEqual(cart_after_change[1][1], '4')
 
     def test_num8(self):
+        """ Test making an order with safe-pay,
+            test perches complete, cart is empty and order in order page """
 
         # Add to cart few products
         self.home_page.open_speakers_category()
-        self.category_page.choose_product_by_index(1)
+        self.category_page.choose_product_by_id(25)
         self.product_page.choose_Quantity(2)
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
 
         self.home_page.open_mice_category()
-        self.category_page.choose_product_by_index(3)
+        self.category_page.choose_product_by_id(30)
         self.product_page.choose_Quantity(1)
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
@@ -212,6 +218,7 @@ class TestAOS(TestCase):
         print("Account Deleted")
 
     def test_num10(self):
+        """ Test login and logout successfully  """
 
         # Navigate to register page
         self.navigation_line.click_account_icon()
