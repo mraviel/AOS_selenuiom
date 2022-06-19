@@ -49,15 +49,21 @@ class TestAOS(TestCase):
         self.order_page = OrdersPage(self.driver)
 
     def test_num1(self):
-        self.home_page.open_laptops_category()
-        self.category_page.choose_product_by_id(9)
-        self.product_page.choose_Quantity(6)
+        """ Test after adding products to cart, all quantities are right """
+
+        product1_info = self.excel.product1(1)
+        product2_info = self.excel.product2(1)
+
+        self.home_page.open_category(product1_info['category'])
+        self.category_page.choose_product_by_id(product1_info['productID'])
+        self.product_page.choose_Quantity(product1_info['quantity'])
         x = int(self.product_page.get_product_quantity())
         self.product_page.click_on_att_to_cart()
         self.navigation_line.click_logo_icon()
-        self.home_page.open_mice_category()
-        self.category_page.choose_product_by_id(27)
-        self.product_page.choose_Quantity(5)
+
+        self.home_page.open_category(product2_info['category'])
+        self.category_page.choose_product_by_id(product2_info['productID'])
+        self.product_page.choose_Quantity(product2_info['quantity'])
         y = int(self.product_page.get_product_quantity())
         self.product_page.click_on_att_to_cart()
         self.assertEqual(int(self.navigation_line.quantity_from_cart()), x + y)
@@ -102,15 +108,21 @@ class TestAOS(TestCase):
             info += 1  # what part of the data to test (color, price ...)
 
     def test_num3(self):
-        self.home_page.open_tablets_category()
-        self.category_page.choose_product_by_id(16)
-        self.product_page.choose_Quantity(6)
+        """ Test after adding to cart two products and delete one of them, the product deleted. """
+
+        product1_info = self.excel.product1(3)
+        product2_info = self.excel.product2(3)
+
+        self.home_page.open_category(product1_info['category'])
+        self.category_page.choose_product_by_id(product1_info['productID'])
+        self.product_page.choose_Quantity(product1_info['quantity'])
         self.product_page.click_on_att_to_cart()
         nameofproduct = self.product_page.get_product_name()
+
         self.navigation_line.click_logo_icon()
-        self.home_page.open_mice_category()
-        self.category_page.choose_product_by_id(27)
-        self.product_page.choose_Quantity(4)
+        self.home_page.open_category(product2_info['category'])
+        self.category_page.choose_product_by_id(product2_info['productID'])
+        self.product_page.choose_Quantity(product2_info['quantity'])
         self.product_page.click_on_att_to_cart()
         self.navigation_line.remove_product_from_cart_icon(1)
         self.assertNotIn(nameofproduct, self.navigation_line.cart_small_window_products())
@@ -133,35 +145,23 @@ class TestAOS(TestCase):
         self.assertEqual("SHOPPING CART", current_page_text)
 
     def test_num5(self):
-        self.home_page.open_tablets_category()
-        self.category_page.choose_product_by_id(16)
-        self.product_page.choose_Quantity(6)
-        x = self.product_page.get_product_price()
-        x1 = x[1:]
-        x1 = x1.replace(',', '')
-        priceofproducts = [float(x1) * float(self.product_page.get_product_quantity())]
-        print(self.product_page.get_product_info())
-        self.product_page.click_on_att_to_cart()
-        self.navigation_line.click_logo_icon()
-        self.home_page.open_mice_category()
-        self.category_page.choose_product_by_id(27)
-        self.product_page.choose_Quantity(4)
-        x = self.product_page.get_product_price()
-        x1 = x[1:]
-        x1 = x1.replace(',', '')
-        priceofproducts += [float(x1) * int(self.product_page.get_product_quantity())]
-        print(self.product_page.get_product_info())
-        self.product_page.click_on_att_to_cart()
-        self.navigation_line.click_logo_icon()
-        self.home_page.open_headphones_category()
-        self.category_page.choose_product_by_id(12)
-        self.product_page.choose_Quantity(10)
-        x = self.product_page.get_product_price()
-        x1 = x[1:]
-        x1 = x1.replace(',', '')
-        priceofproducts += [float(x1) * int(self.product_page.get_product_quantity())]
-        print(self.product_page.get_product_info())
-        self.product_page.click_on_att_to_cart()
+        """ Test after adding to cart 3 products the final price result """
+
+        products_info = [self.excel.product1(5), self.excel.product2(5), self.excel.product3(5)]
+
+        priceofproducts = []
+        for product in products_info:
+            self.home_page.open_category(product['category'])
+            self.category_page.choose_product_by_id(product['productID'])
+            self.product_page.choose_Quantity(product['quantity'])
+            x = self.product_page.get_product_price()
+            x1 = x[1:]
+            x1 = x1.replace(',', '')
+            priceofproducts += [float(x1) * float(self.product_page.get_product_quantity())]
+            print(self.product_page.get_product_info())
+            self.product_page.click_on_att_to_cart()
+            self.navigation_line.click_logo_icon()
+
         w = self.shopping_cart_page.final_price_from_shoppingcart()
         w = w.replace(',', '')
         self.assertIn(str(sum(priceofproducts)), w)
@@ -170,8 +170,6 @@ class TestAOS(TestCase):
 
     def test6(self):
         """ Test that cart page update after editing two products from cart page """
-
-        # There is a bug need to be fixed
 
         # All relevant info for test
         excel_info = [self.excel.product1(6), self.excel.product2(6)]
@@ -205,9 +203,13 @@ class TestAOS(TestCase):
         self.assertEqual(cart_after_change[1][1], '4')
 
     def test_num7(self):
-        self.home_page.open_tablets_category()
-        self.category_page.choose_product_by_id(16)
-        self.product_page.choose_Quantity(6)
+        """ Test going back from product page to category page and after that to home page """
+
+        product_info = self.excel.product1(7)
+
+        self.home_page.open_category(product_info['category'])
+        self.category_page.choose_product_by_id(product_info['productID'])
+        self.product_page.choose_Quantity(product_info['quantity'])
         self.product_page.click_on_att_to_cart()
         self.driver.back()
         self.assertEqual('TABLETS', self.category_page.page_name())
@@ -282,6 +284,8 @@ class TestAOS(TestCase):
         print("Account Deleted")
 
     def test9(self):
+        """ Test making an order with Credit-Card,
+                   test perches complete, cart is empty and order in order page """
 
         # All relevant info for test
         excel_info_products = [self.excel.product1(9), self.excel.product2(9)]  # [{} , {}]
