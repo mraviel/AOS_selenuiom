@@ -84,13 +84,19 @@ class Navigation_line:
             price = cells[2].text
 
             t = name_color_quantity.split("\n")
-            t.append(price)
+            t.append(price[1:])
 
             # remove dots
             if " ..." in t[0] and len(t[0]) >= 30:
                 t[0] = t[0].replace(" ...", "")
             elif "..." in t[0] and len(t[0]) >= 30:
                 t[0] = t[0].replace("...", "")
+
+            # remove additional 'QTY: ' from quantity
+            t[1] = t[1][5:]
+
+            # remove additional 'Color: ' from color
+            t[2] = t[2][7:]
 
             products.append(t)  # [name, quantity, color, price]
 

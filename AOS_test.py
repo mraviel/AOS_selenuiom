@@ -97,30 +97,36 @@ class TestAOS(TestCase):
         print(f"cart window: {products_in_cart_window}")
         print(f"product_info: {products_info}")
 
-        # Is product name (part name) in full name
+        # Is name, quantity, color and price expectation equal to products_in_cart_window?
+
+        # Test product name (part name) in full name
         index = 0
         for product in products_in_cart_window:
             self.assertIn(product[0], products_info[index][0])
             print(f"{product[0]} in '{products_info[index][0]}'")
             index += 1
 
-        # Is quantity, color and price expectation equal to products_in_cart_window?
-        info = 1
-        while info < 4:
-            index = 0
-            for product in products_in_cart_window:
-                if info != 3:
-                    # Test quantity and color
-                    self.assertIn(products_info[index][info], product[info])
-                    print(f"{products_info[index][info]} in '{product[info]}'")
-                else:
-                    # Test total price
-                    total_price = str(float(products_info[index][info]) * float(products_info[index][1]))  # price * qua
-                    self.assertIn(total_price, product[info])
-                    print(f"{total_price} in '{product[info]}'")
+        # Test quantity
+        index = 0
+        for product in products_in_cart_window:
+            self.assertEqual(int(products_info[index][1]), int(product[1]))
+            print(f"{products_info[index][1]} == {product[1]}")
+            index += 1
 
-                index += 1  # Next product
-            info += 1  # what part of the data to test (quantity, color, price ...)
+        # Test color
+        index = 0
+        for product in products_in_cart_window:
+            self.assertEqual(products_info[index][2], product[2])
+            print(f"{products_info[index][2]} == {product[2]}")
+            index += 1
+
+        # Test total price
+        index = 0
+        for product in products_in_cart_window:
+            total_price = float(products_info[index][3]) * float(products_info[index][1])  # price * quantity
+            self.assertEqual(total_price, float(product[3]))
+            print(f"{total_price} == {product[3]}")
+            index += 1
 
         # Test Pass
         self.test_pass = True
@@ -293,7 +299,6 @@ class TestAOS(TestCase):
         self.signup_page.click_i_agree()
         self.signup_page.click_register()
 
-        # self.order_shipping_details_page.wait_for_visibility_next_button()
         self.order_payment_page.next_click()
         self.order_payment_page.choose_payment_method("SafePay")
         self.order_payment_page.type_safe_pay_username(safe_pay['username'])
@@ -464,7 +469,7 @@ class TestAOS(TestCase):
         # Verify that account options not open
         self.navigation_line.click_account_icon()
         account_option_style = self.navigation_line.account_options_small_window_style()
-        self.assertEqual(account_option_style, "display: none;")
+        self.assertEqual(account_option_style, "display: none;")  # none = close, block = open
 
         # Login again for deletion
         self.login_page.type_username(login['username'])
