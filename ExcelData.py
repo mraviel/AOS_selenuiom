@@ -11,6 +11,8 @@ sheet = workbook.active
 
 
 def return_info(title_column, info_column):
+    """ Return dict with keys as title_columns and info_columns as values """
+
     d = {}
     index = 0
     for title in title_column:

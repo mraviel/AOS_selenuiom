@@ -35,6 +35,7 @@ class TestAOS(TestCase):
         # Excel data
         self.excel = ExcelData()
 
+        # Pages
         self.home_page = HomePage(self.driver)
         self.category_page = Category_page(self.driver)
         self.product_page = Product_page(self.driver)
