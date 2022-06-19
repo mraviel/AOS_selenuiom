@@ -95,6 +95,9 @@ class TestAOS(TestCase):
         products_in_cart_window = self.navigation_line.cart_small_window_products()
         products_in_cart_window.reverse()
 
+        print(f"cart window: {products_in_cart_window}")
+        print(f"product_info: {products_info}")
+
         # Is product name (part name) in full name
         index = 0
         for product in products_in_cart_window:
@@ -107,10 +110,18 @@ class TestAOS(TestCase):
         while info < 4:
             index = 0
             for product in products_in_cart_window:
-                self.assertIn(products_info[index][info], product[info])
-                print(f"{products_info[index][info]} in '{product[info]}'")
-                index += 1
-            info += 1  # what part of the data to test (color, price ...)
+                if info != 3:
+                    # Test quantity and color
+                    self.assertIn(products_info[index][info], product[info])
+                    print(f"{products_info[index][info]} in '{product[info]}'")
+                else:
+                    # Test total price
+                    total_price = str(float(products_info[index][info]) * float(products_info[index][1]))  # price * qua
+                    self.assertIn(total_price, product[info])
+                    print(f"{total_price} in '{product[info]}'")
+
+                index += 1  # Next product
+            info += 1  # what part of the data to test (quantity, color, price ...)
 
         # Test Pass
         self.test_pass = True

@@ -35,7 +35,7 @@ class Product_page:
 
     def get_product_price(self):
         """ Return text of product price """
-        return self.driver.find_element(By.CSS_SELECTOR, "div#Description > h2").text
+        return self.driver.find_element(By.CSS_SELECTOR, "div#Description > h2").text[1:]
 
     def get_product_color(self):
         """ Return title of selected color """
