@@ -1,22 +1,18 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from time import sleep
-from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import *
+from selenium.webdriver.common.action_chains import ActionChains
 
 
-class Category_page :
+class Category_page:
 
-    def __init__(self,driver:webdriver.Chrome):
-        self.driver=driver
+    def __init__(self, driver: webdriver.Chrome):
+        self.driver = driver
         self.wait = WebDriverWait(self.driver, 10)
         self.action = ActionChains(self.driver)
 
-    def choose_product_by_index (self, num:int):
+    def choose_product_by_index(self, num: int):
         self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "ul>li>img")))
         self.driver.find_elements(By.CSS_SELECTOR, "ul>li>img")[num].click()
 
@@ -27,5 +23,4 @@ class Category_page :
     def page_name(self):
         self.wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, "h3[class='categoryTitle roboto-regular sticky ng-binding']")))
-        return self.driver.find_element(By.CSS_SELECTOR,
-                                        "h3[class='categoryTitle roboto-regular sticky ng-binding']").text
+        return self.driver.find_element(By.CSS_SELECTOR, "h3[class='categoryTitle roboto-regular sticky ng-binding']").text

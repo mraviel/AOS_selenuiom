@@ -65,9 +65,14 @@ class ExcelData:
     def results(self, test_num):
 
         # Have a bug init
-        title_column = sheet["B"][34]
-        info_column = sheet[self.test_column[test_num]][34]
-        return return_info(title_column, info_column)
+        # title_column = sheet["B"][34]
+        return sheet[self.test_column[test_num]][34]
+        # return return_info(title_column, info_column)
+
+    def pass_and_failed(self, test_num, result):
+
+        self.results(test_num).value = result
+        workbook.save(AOS_data_path)
 
 
 if __name__ == '__main__':

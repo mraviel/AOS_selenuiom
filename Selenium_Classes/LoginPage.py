@@ -24,6 +24,16 @@ class LoginPage:
         self.wait.until(EC.presence_of_element_located((By.NAME, "password")))
         return self.driver.find_element(By.NAME, "password")
 
+    def type_username(self, username: str):
+        # Wait until element located
+        self.wait.until(EC.presence_of_element_located((By.NAME, "username")))
+        self.username().send_keys(username)  # Exel
+
+    def type_password(self, password: str):
+        # Wait until element located
+        self.wait.until(EC.presence_of_element_located((By.NAME, "password")))
+        self.password().send_keys(password)  # Exel
+
     def signin(self):
         while True:
             try:
@@ -41,14 +51,4 @@ class LoginPage:
                 break
             except:
                 pass
-
-    def type_username(self, username: str):
-        # Wait until element located
-        self.wait.until(EC.presence_of_element_located((By.NAME, "username")))
-        self.username().send_keys(username)  # Exel
-
-    def type_password(self, password: str):
-        # Wait until element located
-        self.wait.until(EC.presence_of_element_located((By.NAME, "password")))
-        self.password().send_keys(password)  # Exel
 

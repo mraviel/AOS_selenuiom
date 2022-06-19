@@ -15,6 +15,7 @@ class AccountPage:
         return self.driver.find_element(By.CSS_SELECTOR, ".deleteMainBtnContainer")
 
     def click_yes(self):
+        # After clicking on delete account
         self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".deleteRed")))
         self.driver.find_element(By.CSS_SELECTOR, ".deleteRed").click()
 

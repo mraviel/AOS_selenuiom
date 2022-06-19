@@ -13,8 +13,7 @@ from Selenium_Classes.SignupPage import SignupPage
 from Selenium_Classes.LoginPage import LoginPage
 from Selenium_Classes.AccountPage import AccountPage
 from Selenium_Classes.ShoppingCart import ShoppingCart
-from Selenium_Classes.OrderPaymentMethod import OrderPaymentDetails
-from Selenium_Classes.OrderShippingDetailsPage import OrderShippingDetailsPage
+from Selenium_Classes.OrderPayment import OrderPayment
 from Selenium_Classes.OrdersPage import OrdersPage
 
 
@@ -44,33 +43,38 @@ class TestAOS(TestCase):
         self.login_page = LoginPage(self.driver)
         self.account_page = AccountPage(self.driver)
         self.shopping_cart_page = ShoppingCart(self.driver)
-        self.order_payment_details_page = OrderPaymentDetails(self.driver)
-        self.order_shipping_details_page = OrderShippingDetailsPage(self.driver)
+        self.order_payment_page = OrderPayment(self.driver)
         self.order_page = OrdersPage(self.driver)
+
+        # Test number and pass
+        self.test_pass = False
+        self.test_num = 0
 
     def test_num1(self):
         """ Test after adding products to cart, all quantities are right """
+        self.test_num = 1
 
-        product1_info = self.excel.product1(1)
-        product2_info = self.excel.product2(1)
+        products_info = [self.excel.product1(1), self.excel.product2(1)]
 
-        self.home_page.open_category(product1_info['category'])
-        self.category_page.choose_product_by_id(product1_info['productID'])
-        self.product_page.choose_Quantity(product1_info['quantity'])
-        x = int(self.product_page.get_product_quantity())
-        self.product_page.click_on_att_to_cart()
-        self.navigation_line.click_logo_icon()
+        quantity = 0
+        for product in products_info:
+            self.home_page.open_category(product['category'])
+            self.category_page.choose_product_by_id(product['productID'])
+            self.product_page.choose_Quantity(product['quantity'])
+            quantity += int(self.product_page.get_product_quantity())
+            self.product_page.click_on_att_to_cart()
+            self.navigation_line.click_logo_icon()
 
-        self.home_page.open_category(product2_info['category'])
-        self.category_page.choose_product_by_id(product2_info['productID'])
-        self.product_page.choose_Quantity(product2_info['quantity'])
-        y = int(self.product_page.get_product_quantity())
-        self.product_page.click_on_att_to_cart()
-        self.assertEqual(int(self.navigation_line.quantity_from_cart()), x + y)
+        self.assertEqual(int(self.navigation_line.quantity_from_cart()), quantity)
+
+        # Test Pass
+        self.test_pass = True
 
     def test_num2(self):
         """ Test that shopping cart small window to have all correct products that the user added
             matching: product name, color, quantity and price """
+
+        self.test_num = 2
 
         # All relevant info for test
         excel_info = [self.excel.product1(2), self.excel.product2(2), self.excel.product3(2)]
@@ -107,28 +111,34 @@ class TestAOS(TestCase):
                 index += 1
             info += 1  # what part of the data to test (color, price ...)
 
+        # Test Pass
+        self.test_pass = True
+
     def test_num3(self):
         """ Test after adding to cart two products and delete one of them, the product deleted. """
 
-        product1_info = self.excel.product1(3)
-        product2_info = self.excel.product2(3)
+        self.test_num = 3
 
-        self.home_page.open_category(product1_info['category'])
-        self.category_page.choose_product_by_id(product1_info['productID'])
-        self.product_page.choose_Quantity(product1_info['quantity'])
-        self.product_page.click_on_att_to_cart()
-        nameofproduct = self.product_page.get_product_name()
+        products_info = [self.excel.product1(3), self.excel.product2(3)]
 
-        self.navigation_line.click_logo_icon()
-        self.home_page.open_category(product2_info['category'])
-        self.category_page.choose_product_by_id(product2_info['productID'])
-        self.product_page.choose_Quantity(product2_info['quantity'])
-        self.product_page.click_on_att_to_cart()
+        names_of_products = []
+        for product in products_info:
+            self.home_page.open_category(product['category'])
+            self.category_page.choose_product_by_id(product['productID'])
+            self.product_page.choose_Quantity(product['quantity'])
+            self.product_page.click_on_att_to_cart()
+            names_of_products.append(self.product_page.get_product_name())
+            self.navigation_line.click_logo_icon()
+
         self.navigation_line.remove_product_from_cart_icon(1)
-        self.assertNotIn(nameofproduct, self.navigation_line.cart_small_window_products())
+        self.assertNotIn(names_of_products[0], self.navigation_line.cart_small_window_products())
+
+        # Test Pass
+        self.test_pass = True
 
     def test4(self):
         """ Test after adding to cart one product navigate to cart page """
+        self.test_num = 4
 
         # All relevant info for test
         product = self.excel.product1(4)
@@ -144,8 +154,12 @@ class TestAOS(TestCase):
         current_page_text = self.shopping_cart_page.logo_shopping_cart()
         self.assertEqual("SHOPPING CART", current_page_text)
 
+        # Test Pass
+        self.test_pass = True
+
     def test_num5(self):
         """ Test after adding to cart 3 products the final price result """
+        self.test_num = 5
 
         products_info = [self.excel.product1(5), self.excel.product2(5), self.excel.product3(5)]
 
@@ -168,8 +182,12 @@ class TestAOS(TestCase):
         print(self.navigation_line.final_price_from_cart_icon())
         print(sum(priceofproducts))
 
+        # Test Pass
+        self.test_pass = True
+
     def test6(self):
         """ Test that cart page update after editing two products from cart page """
+        self.test_num = 6
 
         # All relevant info for test
         excel_info = [self.excel.product1(6), self.excel.product2(6)]
@@ -202,8 +220,12 @@ class TestAOS(TestCase):
         # Check if quantity of second product change to 4
         self.assertEqual(cart_after_change[1][1], '4')
 
+        # Test Pass
+        self.test_pass = True
+
     def test_num7(self):
         """ Test going back from product page to category page and after that to home page """
+        self.test_num = 7
 
         product_info = self.excel.product1(7)
 
@@ -216,9 +238,13 @@ class TestAOS(TestCase):
         self.driver.back()
         self.assertEqual('SPECIAL OFFER', self.home_page.return_SPACIAL_OFFER())
 
+        # Test Pass
+        self.test_pass = True
+
     def test_num8(self):
         """ Test making an order with safe-pay,
             test perches complete, cart is empty and order in order page """
+        self.test_num = 8
 
         # All relevant info for test
         excel_info_products = [self.excel.product1(8), self.excel.product2(8)]  # [{} , {}]
@@ -237,7 +263,7 @@ class TestAOS(TestCase):
         self.navigation_line.click_cart_icon()
         self.shopping_cart_page.click_checkout()
 
-        self.order_payment_details_page.click_registration()
+        self.order_payment_page.click_registration()
 
         # Fill info
         self.signup_page.type_username(signup['username'])
@@ -256,15 +282,15 @@ class TestAOS(TestCase):
         self.signup_page.click_register()
 
         # self.order_shipping_details_page.wait_for_visibility_next_button()
-        self.order_shipping_details_page.next_click()
-        self.order_payment_details_page.choose_payment_method("SafePay")
-        self.order_payment_details_page.type_safe_pay_username(safe_pay['username'])
-        self.order_payment_details_page.type_safe_pay_password(safe_pay['password'])
-        self.order_payment_details_page.safe_pay_pay_now_click()
+        self.order_payment_page.next_click()
+        self.order_payment_page.choose_payment_method("SafePay")
+        self.order_payment_page.type_safe_pay_username(safe_pay['username'])
+        self.order_payment_page.type_safe_pay_password(safe_pay['password'])
+        self.order_payment_page.safe_pay_pay_now_click()
 
         # verify the reservation done
-        thank_you_massage = self.order_shipping_details_page.thank_for_order()
-        order_number = self.order_shipping_details_page.order_number()
+        thank_you_massage = self.order_payment_page.thank_for_order()
+        order_number = self.order_payment_page.order_number()
         self.assertEqual("Thank you for buying with Advantage", thank_you_massage)
 
         # Verify shopping cart empty
@@ -283,9 +309,13 @@ class TestAOS(TestCase):
         self.account_page.force_delete_account()
         print("Account Deleted")
 
+        # Test Pass
+        self.test_pass = True
+
     def test9(self):
         """ Test making an order with Credit-Card,
                    test perches complete, cart is empty and order in order page """
+        self.test_num = 9
 
         # All relevant info for test
         excel_info_products = [self.excel.product1(9), self.excel.product2(9)]  # [{} , {}]
@@ -333,24 +363,22 @@ class TestAOS(TestCase):
 
         print("start login")
         # Login
-        self.order_shipping_details_page.type_username(login['username'])
-        self.order_shipping_details_page.type_password(login['password'])
-        self.order_shipping_details_page.click_login()
+        self.order_payment_page.type_username(login['username'])
+        self.order_payment_page.type_password(login['password'])
+        self.order_payment_page.click_login()
 
         print("done login")
 
-        self.order_shipping_details_page.next_click()
-        self.order_payment_details_page.choose_payment_method("MasterCredit")
-        self.order_payment_details_page.type_credit_card_number(master_card['card number'])
-        self.order_payment_details_page.type_credit_cvv_number(master_card['cvv'])
-        self.order_payment_details_page.clear_credit_cvv_number()
-        self.order_payment_details_page.type_credit_cvv_number(master_card['cvv'])
-        self.order_payment_details_page.credit_expiration_date_mm(master_card['mm'])
-        self.order_payment_details_page.credit_expiration_date_yy(master_card['yy'])
-        self.order_payment_details_page.type_credit_cardholder(master_card['card holder'])
-        self.order_payment_details_page.credit_pay_now_click()
+        self.order_payment_page.next_click()
+        self.order_payment_page.choose_payment_method("MasterCredit")
+        self.order_payment_page.type_credit_card_number(master_card['card number'])
+        self.order_payment_page.type_credit_cvv_number(master_card['cvv'])
+        self.order_payment_page.credit_expiration_date_mm(master_card['mm'])
+        self.order_payment_page.credit_expiration_date_yy(master_card['yy'])
+        self.order_payment_page.type_credit_cardholder(master_card['card holder'])
+        self.order_payment_page.credit_pay_now_click()
 
-        order_number = self.order_shipping_details_page.order_number()
+        order_number = self.order_payment_page.order_number()
 
         # Verify shopping cart empty
         self.navigation_line.click_cart_icon()
@@ -368,8 +396,12 @@ class TestAOS(TestCase):
         self.account_page.force_delete_account()
         print("Account Deleted")
 
+        # Test Pass
+        self.test_pass = True
+
     def test_num10(self):
         """ Test login and logout successfully  """
+        self.test_num = 10
 
         # All relevant info for test
         signup = self.excel.new_account(10)
@@ -433,8 +465,16 @@ class TestAOS(TestCase):
         self.account_page.force_delete_account()
         print("Account Deleted")
 
+        # Test Pass
+        self.test_pass = True
+
     def tearDown(self):
+
+        # Write to excel the test result
+        if self.test_pass:
+            self.excel.pass_and_failed(self.test_num, "V")
+        else:
+            self.excel.pass_and_failed(self.test_num, "X")
+
         # Close the test
         self.driver.close()
-
-
