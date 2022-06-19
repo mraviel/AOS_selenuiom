@@ -1,7 +1,6 @@
 from unittest import TestCase
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from time import sleep
 from os import path
 from ExcelData import ExcelData
 
@@ -222,6 +221,7 @@ class TestAOS(TestCase):
             self.product_page.click_on_att_to_cart()
             index += 1
 
+        # Get all shopping cart items
         self.navigation_line.click_cart_icon()
         cart_after_change = self.shopping_cart_page.all_shopping_cart_items()
         print(cart_after_change)
@@ -355,7 +355,7 @@ class TestAOS(TestCase):
         self.signup_page.click_i_agree()
         self.signup_page.click_register()
 
-        sleep(4)
+        self.navigation_line.wait_for_visibility_of_username()
         self.navigation_line.sign_out_option()
         print("logout good")
 
@@ -440,6 +440,7 @@ class TestAOS(TestCase):
         self.signup_page.click_register()
 
         # Login
+        self.navigation_line.click_account_icon()
         self.navigation_line.click_account_icon()
         self.login_page.type_username(login['username'])
         self.login_page.type_password(login['password'])
