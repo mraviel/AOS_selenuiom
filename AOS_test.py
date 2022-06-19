@@ -123,9 +123,13 @@ class TestAOS(TestCase):
         # Test total price
         index = 0
         for product in products_in_cart_window:
-            total_price = float(products_info[index][3]) * float(products_info[index][1])  # price * quantity
-            self.assertEqual(total_price, float(product[3]))
-            print(f"{total_price} == {product[3]}")
+            price = products_info[index][3][1:].replace(',', '')  # if there a ',' remove it
+            quantity = products_info[index][1]
+            total_price = float(price) * float(quantity)  # price * quantity
+
+            total_price_shopping_cart = product[3][1:].replace(',', '')  # if there a ',' remove it
+            self.assertEqual(total_price, float(total_price_shopping_cart))
+            print(f"{total_price}$ == {product[3]}")
             index += 1
 
         # Test Pass
@@ -445,7 +449,6 @@ class TestAOS(TestCase):
         self.signup_page.click_register()
 
         # Login
-        self.navigation_line.click_account_icon()
         self.navigation_line.click_account_icon()
         self.login_page.type_username(login['username'])
         self.login_page.type_password(login['password'])

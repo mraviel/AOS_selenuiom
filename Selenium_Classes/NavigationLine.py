@@ -84,7 +84,7 @@ class Navigation_line:
             price = cells[2].text
 
             t = name_color_quantity.split("\n")
-            t.append(price[1:])
+            t.append(price)
 
             # remove dots
             if " ..." in t[0] and len(t[0]) >= 30:
