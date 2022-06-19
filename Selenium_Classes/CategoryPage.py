@@ -23,3 +23,9 @@ class Category_page :
     def choose_product_by_id(self, id: int):
         self.wait.until(EC.presence_of_element_located((By.ID, f"{id}")))
         self.driver.find_element(By.ID, f"{id}").click()
+
+    def page_name(self):
+        self.wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "h3[class='categoryTitle roboto-regular sticky ng-binding']")))
+        return self.driver.find_element(By.CSS_SELECTOR,
+                                        "h3[class='categoryTitle roboto-regular sticky ng-binding']").text

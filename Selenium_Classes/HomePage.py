@@ -41,3 +41,7 @@ class HomePage:
         category = category.lower()
         self.wait.until(EC.presence_of_element_located((By.ID, f"{category}Txt")))
         self.driver.find_element(By.ID, f"{category}Txt").click()
+
+    def return_SPACIAL_OFFER(self):
+        self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "h3[translate='SPACIAL_OFFER']")))
+        return self.driver.find_element(By.CSS_SELECTOR, "h3[translate='SPACIAL_OFFER']").text

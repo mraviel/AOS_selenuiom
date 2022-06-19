@@ -34,3 +34,15 @@ class OrderShippingDetailsPage:
         self.wait.until(EC.visibility_of_element_located((By.ID, "orderNumberLabel")))
         return self.driver.find_element(By.ID, "orderNumberLabel").text
 
+    def type_username(self, username: str):
+        self.wait.until(EC.presence_of_element_located((By.NAME, "usernameInOrderPayment")))
+        self.driver.find_element(By.NAME, "usernameInOrderPayment").send_keys(username)
+
+    def type_password(self, password: str):
+        self.wait.until(EC.presence_of_element_located((By.NAME, "passwordInOrderPayment")))
+        self.driver.find_element(By.NAME, "passwordInOrderPayment").send_keys(password)
+
+    def click_login(self):
+        self.wait.until(EC.presence_of_element_located((By.ID, "login_btnundefined")))
+        self.driver.find_element(By.ID, "login_btnundefined").click()
+

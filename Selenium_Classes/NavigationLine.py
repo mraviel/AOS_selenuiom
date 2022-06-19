@@ -114,6 +114,15 @@ class Navigation_line :
 
         return products
 
+    def quantity_from_cart(self):
+        self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a[id='shoppingCartLink']>span")))
+        return self.driver.find_element(By.CSS_SELECTOR, "a[id='shoppingCartLink']>span").text
+
+    def final_price_from_cart_icon(self):
+        self.mouse_hover_cart_icon()
+        self.wait.until(EC.presence_of_element_located((By.ID, "checkOutPopUp")))
+        return self.driver.find_element(By.ID, "checkOutPopUp").text
+
 
 
 

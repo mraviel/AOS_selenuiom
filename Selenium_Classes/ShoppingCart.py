@@ -8,6 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import *
 
+from Selenium_Classes.NavigationLine import Navigation_line
+
 
 class ShoppingCart:
 
@@ -15,6 +17,7 @@ class ShoppingCart:
         self.driver=driver
         self.wait = WebDriverWait(self.driver, 20)
         self.action = ActionChains(self.driver)
+        self.navigation_line = Navigation_line(self.driver)
 
     def logo_shopping_cart(self):
         self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='select  ng-binding']")))
@@ -63,3 +66,8 @@ class ShoppingCart:
         """ Return  """
         # EDIT ME
         return self.driver.find_element(By.LINK_TEXT, "CONTINUE SHOPPING").text
+
+    def final_price_from_shoppingcart(self):
+        self.navigation_line.click_cart_icon()
+        self.wait.until(EC.presence_of_element_located((By.ID, "checkOutButton")))
+        return self.driver.find_element(By.ID, "checkOutButton").text
