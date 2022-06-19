@@ -37,8 +37,6 @@ class HomePage:
         self.driver.find_element(By.ID, "headphonesTxt").click()
 
     def open_category(self, category: str):
-        if category != str:
-            raise TypeError("category must be str")
 
         category = category.lower()
         self.wait.until(EC.presence_of_element_located((By.ID, f"{category}Txt")))

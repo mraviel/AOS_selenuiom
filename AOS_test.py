@@ -121,11 +121,12 @@ class TestAOS(TestCase):
             self.navigation_line.click_logo_icon()
 
         # change products quantity
+        quantity = [3, 4]
         index = 0
         for i in range(2):
             self.navigation_line.click_cart_icon()
             self.shopping_cart_page.edit_product_by_index(index)
-            self.product_page.choose_Quantity(3 + index)
+            self.product_page.choose_Quantity(quantity[index])
             self.product_page.click_on_att_to_cart()
             index += 1
 
