@@ -152,6 +152,8 @@ class TestAOS(TestCase):
             self.navigation_line.click_logo_icon()
 
         self.navigation_line.remove_product_from_cart_icon(1)
+
+        # Test that part of name (first 25 letters) in products names form cart small window
         self.assertNotIn(names_of_products[0][:25], self.navigation_line.cart_small_window_products_names())
 
         # Test Pass
@@ -497,5 +499,5 @@ class TestAOS(TestCase):
         else:
             self.excel.pass_and_failed(self.test_num, "X")
 
-        # Close the test
+        # Close the browser
         self.driver.close()
