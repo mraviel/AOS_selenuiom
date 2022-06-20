@@ -152,7 +152,7 @@ class TestAOS(TestCase):
             self.navigation_line.click_logo_icon()
 
         self.navigation_line.remove_product_from_cart_icon(1)
-        self.assertNotIn(names_of_products[0], self.navigation_line.cart_small_window_products())
+        self.assertNotIn(names_of_products[0][:25], self.navigation_line.cart_small_window_products_names())
 
         # Test Pass
         self.test_pass = True

@@ -102,6 +102,14 @@ class Navigation_line:
 
         return products
 
+    def cart_small_window_products_names(self):
+        """ Return list of names in products """
+        all_products_details = self.cart_small_window_products()
+        products_names = []
+        for product in all_products_details:
+            products_names.append(product[0])
+        return products_names
+
     def quantity_from_cart(self):
         """ Return total amount of products in cart """
         self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "a[id='shoppingCartLink']>span")))

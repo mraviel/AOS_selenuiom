@@ -65,11 +65,8 @@ class ExcelData:
         return return_info(title_column, info_column)
 
     def results(self, test_num):
-
-        # Have a bug init
-        # title_column = sheet["B"][34]
+        """ Results by test number """
         return sheet[self.test_column[test_num]][34]
-        # return return_info(title_column, info_column)
 
     def pass_and_failed(self, test_num, result):
 
